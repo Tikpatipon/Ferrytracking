@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           body: TabBarView(
             children: [MapSample(), Videorealtime()],
@@ -45,6 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Tab(
                 text: "ภาพการจราจร",
+              ),
+              Tab(
+                text: "สถานะการจราจร",
               ),
             ],
           ),
