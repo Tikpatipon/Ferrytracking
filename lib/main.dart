@@ -1,4 +1,5 @@
 import 'package:ferrytracking/screen/showmap.dart';
+import 'package:ferrytracking/screen/traffic.dart';
 import 'package:flutter/material.dart';
 import 'package:ferrytracking/screen/videorealtime.dart';
 
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
         length: 3,
         child: Scaffold(
           body: TabBarView(
-            children: [MapSample(), Videorealtime()],
+            children: [MapSample(), Videorealtime(), traffic()],
           ),
           backgroundColor: Colors.blue,
           bottomNavigationBar: TabBar(
