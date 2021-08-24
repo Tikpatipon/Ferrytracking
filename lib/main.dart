@@ -1,12 +1,15 @@
-import 'package:ferrytracking2/screen/showmap.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ferrytracking2/screen/videorealtime.dart';
+import 'package:ferry_tracking/screen/realtime_video.dart';
+import 'package:ferry_tracking/screen/ferry_map.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(FerryTracking());
 }
 
-class MyApp extends StatelessWidget {
+class FerryTracking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,40 +17,49 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Ferry Trackking Home Page'),
+      home: FerryTrackingPage(
+        title: 'Ferry Trackking',
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class FerryTrackingPage extends StatefulWidget {
+  FerryTrackingPage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _FerryTrackingPageState createState() => _FerryTrackingPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _FerryTrackingPageState extends State<FerryTrackingPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          body: TabBarView(
-            children: [MapSample(), Videorealtime()],
-          ),
-          backgroundColor: Colors.blue,
-          bottomNavigationBar: TabBar(
-            tabs: [
-              Tab(
-                text: "ตำแหน่งของแพขนานยนต์",
-              ),
-              Tab(
-                text: "ภาพการจราจร",
-              )
-            ],
-          ),
-        ));
+      length: 2,
+      child: Scaffold(
+        body: TabBarView(
+          children: [
+            FerryMap(),
+            RealtimeVideo(),
+          ],
+        ),
+        backgroundColor: Colors.blue,
+        bottomNavigationBar: TabBar(
+          tabs: [
+            Tab(
+              text: "ตำแหน่งของแพขนานยนต์",
+            ),
+            Tab(
+              text: "ภาพการจราจร",
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
