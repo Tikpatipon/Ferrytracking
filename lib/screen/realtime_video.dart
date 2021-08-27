@@ -6,8 +6,10 @@ class RealtimeVideo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFffc0cb),
       appBar: AppBar(
         title: Text('ภาพการจาราจร'),
+        backgroundColor: Color(0xFF00ffcf),
       ),
       body: StreamBuilder<QuerySnapshot<Object?>>(
         stream: FirebaseFirestore.instance.collection('traffics').snapshots(),
@@ -35,14 +37,17 @@ class RealtimeVideo extends StatelessWidget {
                   margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: Column(
                     children: [
-                      Text(data.docs[index]['name']),
+                      Text(
+                        data.docs[index]['name'],
+                        style: TextStyle(fontSize: 15.0),
+                      ),
                       SizedBox(
                         height: 10,
                       ),
                       Mjpeg(
                         isLive: data.docs[index]['is_live'],
                         width: 500,
-                        height: 200,
+                        height: 210,
                         stream: data.docs[index]['link'],
                       ),
                     ],

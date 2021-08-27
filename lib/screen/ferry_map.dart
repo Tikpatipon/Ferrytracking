@@ -20,18 +20,26 @@ class FerryMapState extends State<FerryMap> {
   final FirebaseFirestore collectionReferences = FirebaseFirestore.instance;
 
   Set<Marker> _markers = {};
+  late BitmapDescriptor customMarker;
 
   @override
   void initState() {
     _goToTheGooglePlex();
     _getPins();
     super.initState();
+    getCustomMarker();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _getPinsUpdate();
+  }
+
+  void getCustomMarker() async {
+    customMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/images/ferryicon1.png');
   }
 
   Future<void> _getPins() async {
@@ -49,6 +57,7 @@ class FerryMapState extends State<FerryMap> {
                         ship.data()['location']['latitude'],
                         ship.data()['location']['longitude'],
                       ),
+                      icon: customMarker,
                       infoWindow: InfoWindow(
                         title: ship.data()['name'],
                       ),
@@ -78,6 +87,7 @@ class FerryMapState extends State<FerryMap> {
                         ship.data()['location']['latitude'],
                         ship.data()['location']['longitude'],
                       ),
+                      icon: customMarker,
                       infoWindow: InfoWindow(
                         title: ship.data()['name'],
                       ),
@@ -97,6 +107,7 @@ class FerryMapState extends State<FerryMap> {
     return Scaffold(
       appBar: AppBar(
         title: Text('ตำแหน่งของแพขนานยนต์'),
+        backgroundColor: Color(0xFF00ffcf),
       ),
       body: GoogleMap(
         mapType: MapType.normal,

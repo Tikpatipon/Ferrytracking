@@ -16,7 +16,7 @@ class FerryTracking extends StatelessWidget {
     return MaterialApp(
       title: 'Ferry Trackking',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       home: FerryTrackingPage(
         title: 'Ferry Trackking',
@@ -47,20 +47,23 @@ class _FerryTrackingPageState extends State<FerryTrackingPage> {
           children: [
             FerryMap(),
             RealtimeVideo(),
-            traffic(),
+            Traffic(),
           ],
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF00ffcf),
         bottomNavigationBar: TabBar(
           tabs: [
             Tab(
-              text: "ตำแหน่งของแพขนานยนต์",
+              text: "ตำแหน่งของแพ",
+              icon: Icon(Icons.gps_fixed),
             ),
             Tab(
               text: "ภาพการจราจร",
+              icon: Icon(Icons.live_tv),
             ),
             Tab(
-              text: "สถานะการจราจร",
+              text: "สีการจราจร",
+              icon: Icon(Icons.traffic),
             )
           ],
         ),
