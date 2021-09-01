@@ -8,28 +8,48 @@ class Traffic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFFffc0cb),
-        appBar: AppBar(
-          title: Text('สถานะการจราจร'),
-          backgroundColor: Color(0xFF00ffcf),
+      backgroundColor: Color(0xFFffc0cb),
+      appBar: AppBar(
+        title: Text('ความหนาแน่นของรถที่มาใช้บริการ'),
+        backgroundColor: Color(0xFF00ffcf),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text("สีเขียว", style: TextStyle(fontSize: 16)),
+            Text(""),
+            Image.asset('assets/images/green.png'),
+            Text(""),
+            Text("การจราจรคล่องตัว"),
+            Text(
+                "รถที่รอใช้บริการโดยประมาณ รถยนต์ 10 คัน รถจักรยานยนต์ 20 คัน "),
+            Text(""),
+            Text("สีส้ม", style: TextStyle(fontSize: 16)),
+            Text(""),
+            Image.asset('assets/images/orange.png'),
+            Text(""),
+            Text("การจราจรเริ่มหนาแน่น"),
+            Text(
+                "รถที่รอใช้บริการโดยประมาณ รถยนต์ 20 คัน รถจักรยานยนต์ 40 คัน "),
+            Text(""),
+            Text("สีแดง", style: TextStyle(fontSize: 16)),
+            Text(""),
+            Image.asset('assets/images/red.png'),
+            Text(""),
+            Text("การจราจรติดขัด"),
+            Text(
+                "รถที่รอใช้บริการโดยประมาณ รถยนต์ 30 คัน รถจักรยานยนต์ 60 คัน "),
+            Text(""),
+            Text("สีแดงเลือดหมู", style: TextStyle(fontSize: 16)),
+            Text(""),
+            Image.asset('assets/images/red2.png'),
+            Text(""),
+            Text("การจราจรติดขัดมาก "),
+            Text(
+                "รถที่รอใช้บริการโดยประมาณ รถยนต์ 40 คัน รถจักรยานยนต์ 80 คัน "),
+          ],
         ),
-        body: Center(
-          child: Column(
-            children: [
-              Text("สีเขียว: การจราจรไม่ล่าช้า"),
-              Text(" "),
-              Text(" "),
-              Text(" "),
-              Text(" "),
-              Text("สีส้ม: ปริมาณการจราจรปานกลาง"),
-              Text(" "),
-              Text(" "),
-              Text(" "),
-              Text(" "),
-              Text(
-                  "สีแดง: การจราจรล่าช้า สีแดงยิ่งเข้มแสดงว่าการจราจรบนถนนนั้นยิ่งเคลื่อนตัวได้ช้าลง "),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
