@@ -25,9 +25,9 @@ class FerryMapState extends State<FerryMap> {
   @override
   void initState() {
     _goToTheGooglePlex();
+    _getCustomMarker();
     _getPins();
     super.initState();
-    getCustomMarker();
   }
 
   @override
@@ -36,10 +36,11 @@ class FerryMapState extends State<FerryMap> {
     _getPinsUpdate();
   }
 
-  void getCustomMarker() async {
+  void _getCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/images/ferryicon1.png');
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/images/ferryicon1.png',
+    );
   }
 
   Future<void> _getPins() async {
