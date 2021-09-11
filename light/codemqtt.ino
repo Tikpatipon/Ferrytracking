@@ -5,12 +5,11 @@
 #include <TinyGPS++.h>
 #include <HardwareSerial.h>
 
-
 #define WIFI_STA_NAME "ANGKHANA" //change to your own ssid
 #define WIFI_STA_PASS "61032522" //change to your own password
 
 #define MQTT_SERVER "driver.cloudmqtt.com"
-#define MQTT_PORT   18869
+#define MQTT_PORT 18869
 #define MQTT_USER_ID "tikproject"
 #define MQTT_USERNAME "dothhsps"
 #define MQTT_PASSWORD "TLjB0NeLDOrt"
@@ -78,22 +77,24 @@ void loop()
     }
     else
     {
-      while (ss.available() > 0)
-      if (gps.encode(ss.read()))
-      displayInfo();
+        while (ss.available() > 0)
+            if (gps.encode(ss.read()))
+            {
+                displayInfo();
+            }
 
-      if (millis() > 5000 && gps.charsProcessed() < 10)
-      {
-       Serial.println(F("No GPS detected: check wiring."));
-       while(true);
-      }
-    
-   
-       sendDataToServer();
+        sendDataToServer();
+
+        if (millis() > 5000 && gps.charsProcessed() < 10)
+        {
+            Serial.println(F("No GPS detected: check wiring."));
+            while (true)
+                ;
+        }
     }
 }
 
-void sendDataToServer()
+void sendDataToServer(String latitude, String longitude)
 
 {
     long prob = 0;
@@ -113,26 +114,27 @@ void sendDataToServer()
     mqtt.publish("/locations", output);
 }
 
-
 void displayInfo()
 {
     Serial.print(F("Location: "));
     if (gps.location.isValid())
     {
-   LAT = gps.location.lat(),6;
-   LONG = gps.location.lng(),6;
+        LAT = gps.location.lat(), 6;
+        LONG = gps.location.lng(), 6;
 
-   latitude = String(LAT);
-   longitude = String(LONG);
+        latitude = String(LAT);
+        longitude = String(LONG);
 
-      Serial.print(gps.location.lat(),6);
-      Serial.print(F(","));
-      Serial.print(gps.location.lng(),6);
+        Serial.print(gps.location.lat(), 6);
+        Serial.print(F(","));
+        Serial.print(gps.location.lng(), 6);
+
+        sendDataToServer(latitude, longitude);
     }
-   else
+    else
     {
-      Serial.print(F("INVALID"));
+        Serial.print(F("INVALID"));
     }
 
-Serial.println();
+    Serial.println();
 }
