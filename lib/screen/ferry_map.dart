@@ -19,21 +19,13 @@ class FerryMapState extends State<FerryMap> {
 
   final FirebaseFirestore collectionReferences = FirebaseFirestore.instance;
 
-  Set<Marker> _markers = {};
   late BitmapDescriptor customMarker;
 
   @override
   void initState() {
     _goToTheGooglePlex();
     _getCustomMarker();
-    _getPins();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _getPinsUpdate();
   }
 
   void _getCustomMarker() async {
@@ -43,64 +35,31 @@ class FerryMapState extends State<FerryMap> {
     );
   }
 
-  Future<void> _getPins() async {
+  Set<Marker> _getPins(ships) {
     Set<Marker> markers = {};
-    _markers.clear();
-    await collectionReferences.collection('ships').get().then(
-          (ships) => {
-            if (ships.docs.length != 0)
-              {
-                ships.docs.forEach((ship) {
-                  markers.add(
-                    Marker(
-                      markerId: MarkerId(ship.id),
-                      position: LatLng(
-                        ship.data()['location']['latitude'],
-                        ship.data()['location']['longitude'],
-                      ),
-                      icon: customMarker,
-                      infoWindow: InfoWindow(
-                        title: ship.data()['name'],
-                      ),
-                    ),
-                  );
-                })
-              }
-          },
-        );
-    setState(() {
-      _markers = markers;
-    });
-  }
 
-  Future<void> _getPinsUpdate() async {
-    Set<Marker> markers = {};
-    _markers.clear();
-    collectionReferences.collection('ships').snapshots().listen(
-          (ships) => {
-            if (ships.docs.length != 0)
-              {
-                ships.docs.forEach((ship) {
-                  markers.add(
-                    Marker(
-                      markerId: MarkerId(ship.id),
-                      position: LatLng(
-                        ship.data()['location']['latitude'],
-                        ship.data()['location']['longitude'],
-                      ),
-                      icon: customMarker,
-                      infoWindow: InfoWindow(
-                        title: ship.data()['name'],
-                      ),
-                    ),
-                  );
-                })
-              }
-          },
-        );
-    setState(() {
-      _markers = markers;
-    });
+    if (ships.docs.length != 0) {
+      ships.docs.forEach(
+        (ship) {
+          print(ship.data());
+          markers.add(
+            Marker(
+              markerId: MarkerId(ship.id),
+              position: LatLng(
+                ship.data()['location']['latitude'],
+                ship.data()['location']['longitude'],
+              ),
+              icon: customMarker,
+              infoWindow: InfoWindow(
+                title: ship.data()['name'],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    return markers;
   }
 
   @override
@@ -110,14 +69,33 @@ class FerryMapState extends State<FerryMap> {
         title: Text('ตำแหน่งของแพขนานยนต์'),
         backgroundColor: Color(0xFF00ffcf),
       ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        trafficEnabled: true,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: collectionReferences.collection('ships').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+              ),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return GoogleMap(
+            mapType: MapType.normal,
+            trafficEnabled: true,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            markers: _getPins(snapshot.data),
+          );
         },
-        markers: _markers,
       ),
     );
   }
