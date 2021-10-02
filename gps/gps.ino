@@ -19,8 +19,8 @@
 
 char output[1024];
 static const uint32_t GPSBaud = 9600;
-double LAT;
-double LONG;
+float LAT;
+float LONG;
 String latitude;
 String longitude;
 
@@ -83,8 +83,6 @@ void loop()
                 displayInfo();
             }
 
-        sendDataToServer();
-
         if (millis() > 5000 && gps.charsProcessed() < 10)
         {
             Serial.println(F("No GPS detected: check wiring."));
@@ -122,8 +120,8 @@ void displayInfo()
         LAT = gps.location.lat(), 6;
         LONG = gps.location.lng(), 6;
 
-        latitude = String(LAT);
-        longitude = String(LONG);
+        latitude = String(LAT, 6);
+        longitude = String(LONG, 6);
 
         Serial.print(gps.location.lat(), 6);
         Serial.print(F(","));
